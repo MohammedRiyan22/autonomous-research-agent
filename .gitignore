@@ -1,0 +1,4 @@
+__pycache__/
+*.py[cod]
+research_runs.sqlite3
+.venv/
