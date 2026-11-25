@@ -5,11 +5,14 @@ flowchart LR
     U[User question] --> UI[Browser question form]
     UI --> J[Background run and progress status]
     J --> P[Rule-based subquestion planner]
-    P --> S[Four-query web search via ddgs]
+    P --> S[Four broad web searches via ddgs]
     S -->|candidate URLs| F[Requests page fetcher]
     F --> X[Beautiful Soup text extraction]
     X --> Q[Topic-keyword relevance filter]
     Q --> E[Relevant-sentence matcher]
+    E --> TS[Up to two claim-focused searches]
+    TS --> F2[Open up to two additional pages from other domains]
+    F2 --> E
     E --> C[Near-identical wording and number checks]
     C --> L[Local Ollama Gemma 4 12B]
     L --> V[Validate source IDs and claim status]
@@ -18,6 +21,7 @@ flowchart LR
     J -->|live steps and final report| UI
     R --> DB[(SQLite run history)]
     S -. failure .-> ER[Visible search/page/model error]
+    TS -. failure .-> ER
     F -. blocked or unreadable .-> ER
     L -. unavailable .-> ER
     ER --> R
